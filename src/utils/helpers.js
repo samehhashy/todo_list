@@ -6,3 +6,7 @@ export function generateId(arr) {
   if (arr.some(el => el.id === id)) generateId();
   else return id;
 }
+
+export function getIndexById(item, arr) {
+  return arr.findIndex(el => el.id === item.id);
+}

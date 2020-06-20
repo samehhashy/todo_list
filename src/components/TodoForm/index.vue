@@ -7,7 +7,7 @@
       rounded
       color="secondary"
       :rules="validations"
-      :validate-on-blur="false"
+      validate-on-blur
     >
       <template #append>
         <AppColorPicker @color-pick="handleColorPick">
@@ -24,6 +24,7 @@
             </v-btn>
           </template>
         </AppColorPicker>
+
         <v-btn
           fab
           depressed

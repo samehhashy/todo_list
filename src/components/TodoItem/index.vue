@@ -31,7 +31,7 @@
                   </v-btn>
                   <v-btn
                     class="todo-item__actions__btn"
-                    color="warning"
+                    color="secondary"
                     fab
                     x-small
                     depressed
@@ -71,14 +71,17 @@ export default {
   },
 
   methods: {
-    ...mapActions(["RemoveTodoItem"]),
+    ...mapActions(["RemoveTodoItem", "ToggleDoneState"]),
 
     removeItem() {
       this.RemoveTodoItem(this.todoItem);
     },
 
     editItem() {},
-    toggleDoneState() {}
+
+    toggleDoneState() {
+      this.ToggleDoneState(this.todoItem);
+    }
   }
 };
 </script>

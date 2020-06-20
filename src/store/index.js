@@ -1,6 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import { generateId } from "@/utils/helpers";
+import { generateId, getIndexById } from "@/utils/helpers";
 
 Vue.use(Vuex);
 
@@ -48,6 +48,9 @@ export default new Vuex.Store({
     },
     REMOVE_TODO_ITEM(state, payload) {
       state.todoItems.splice(payload, 1);
+    },
+    TOGGLE_DONE_STATE(state, payload) {
+      state.todoItems[payload].isDone = !state.todoItems[payload].isDone;
     }
   },
 
@@ -59,8 +62,13 @@ export default new Vuex.Store({
     },
 
     RemoveTodoItem({ state, commit }, item) {
-      const index = state.todoItems.findIndex(el => el.id === item.id);
+      const index = getIndexById(item, state.todoItems);
       commit("REMOVE_TODO_ITEM", index);
+    },
+
+    ToggleDoneState({ state, commit }, item) {
+      const index = getIndexById(item, state.todoItems);
+      commit("TOGGLE_DONE_STATE", index);
     }
   },
 

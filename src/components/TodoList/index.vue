@@ -1,8 +1,6 @@
 <template>
   <div>
-    <v-slide-y-transition group>
-      <TodoItem v-for="(item, i) in sortedItems" :key="i" :todo-item="item" />
-    </v-slide-y-transition>
+    <TodoItem v-for="(item, i) in sortedItems" :key="i" :todo-item="item" />
   </div>
 </template>
 
