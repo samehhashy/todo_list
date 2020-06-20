@@ -12,7 +12,14 @@
       <template #append>
         <AppColorPicker @color-pick="handleColorPick">
           <template>
-            <v-btn fab depressed x-small color="secondary" class="mx-2 mt-1">
+            <v-btn
+              fab
+              depressed
+              x-small
+              dark
+              :color="form.color"
+              class="mx-2 mt-1"
+            >
               <v-icon size="20">mdi-palette</v-icon>
             </v-btn>
           </template>
@@ -34,6 +41,7 @@
 
 <script>
 import AppColorPicker from "@/components/AppColorPicker";
+import { mapActions } from "vuex";
 
 export default {
   components: { AppColorPicker },
@@ -42,7 +50,7 @@ export default {
     return {
       form: {
         title: "",
-        color: ""
+        color: this.$vuetify.theme.themes.light.secondary // default
       },
       validations: [
         v => !!v || "Cannot be empty",
@@ -59,18 +67,17 @@ export default {
   },
 
   methods: {
-    onSubmit(newItem) {
+    ...mapActions(["AddTodoItem"]),
+
+    onSubmit() {
       if (this.isValid) {
-        console.log("onSubmit -> newItem", newItem);
+        this.AddTodoItem({ ...this.form });
+        this.resetForm();
       }
-      this.resetForm();
     },
 
     resetForm() {
-      this.form = {
-        title: "",
-        color: ""
-      };
+      this.form.title = "";
     },
 
     handleColorPick(color) {

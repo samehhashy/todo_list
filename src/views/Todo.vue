@@ -1,17 +1,22 @@
 <template>
-  <v-container fluid class="fill-height">
-    <v-row align="center" align-content="center" justify="center">
-      <Todo />
-    </v-row>
+  <v-container>
+    <div class="todo">
+      <TodoForm class="mb-6" />
+      <TodoList :todo-items="todoItems" />
+    </div>
   </v-container>
 </template>
 
 <script>
-import Todo from "@/components/Todo";
+import TodoForm from "@/components/TodoForm";
+import TodoList from "@/components/TodoList";
+import { mapGetters } from "vuex";
 
 export default {
-  name: "Home",
+  components: { TodoForm, TodoList },
 
-  components: { Todo }
+  computed: {
+    ...mapGetters(["todoItems"])
+  }
 };
 </script>

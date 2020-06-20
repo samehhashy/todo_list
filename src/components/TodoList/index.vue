@@ -1,11 +1,14 @@
 <template>
   <div>
-    <TodoItem v-for="(item, i) in todoItems" :key="i" :todo-item="item" />
+    <v-slide-y-transition group>
+      <TodoItem v-for="(item, i) in sortedItems" :key="i" :todo-item="item" />
+    </v-slide-y-transition>
   </div>
 </template>
 
 <script>
 import TodoItem from "@/components/TodoItem";
+import _sortBy from "lodash/sortBy";
 
 export default {
   components: { TodoItem },
@@ -14,6 +17,12 @@ export default {
     todoItems: {
       type: Array,
       required: true
+    }
+  },
+
+  computed: {
+    sortedItems() {
+      return _sortBy(this.todoItems, "isDone");
     }
   }
 };
