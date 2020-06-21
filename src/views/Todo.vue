@@ -16,7 +16,7 @@ export default {
   components: { TodoForm, TodoList },
 
   computed: {
-    ...mapGetters(["todoItems"])
+    ...mapGetters({ todoItems: "todos/items" })
   }
 };
 </script>

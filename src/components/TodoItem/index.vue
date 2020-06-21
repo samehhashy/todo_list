@@ -71,7 +71,10 @@ export default {
   },
 
   methods: {
-    ...mapActions(["RemoveTodoItem", "ToggleDoneState"]),
+    ...mapActions({
+      RemoveTodoItem: "todos/RemoveItem",
+      ToggleDoneState: "todos/ToggleDoneState"
+    }),
 
     removeItem() {
       this.RemoveTodoItem(this.todoItem);

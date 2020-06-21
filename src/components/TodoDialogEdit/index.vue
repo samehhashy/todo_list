@@ -3,13 +3,29 @@
     <template>
       <v-container>
         <v-form @submit.prevent="onSubmit">
-          <v-text-field
-            :value="todoItem.title"
-            outlined
-            label="Edit Item"
-            @input="onTitleEdit"
-          />
-          <v-btn depressed type="submit" color="accent">Save</v-btn>
+          <v-row>
+            <v-col>
+              <v-text-field
+                :value="todoItem.title"
+                outlined
+                label="Edit Item"
+                @input="onTitleEdit"
+              />
+            </v-col>
+            <v-col cols="2" class="pt-5">
+              <TodoColorPicker
+                :current-color="newTodoItem.color"
+                @color-pick="onColorPick"
+              />
+            </v-col>
+          </v-row>
+
+          <v-btn depressed type="submit" color="accent" class="ma-2">
+            Save
+          </v-btn>
+          <v-btn depressed color="warning" class="ma-2" @click="close">
+            Cancel
+          </v-btn>
         </v-form>
       </v-container>
     </template>
@@ -18,10 +34,11 @@
 
 <script>
 import AppDialog from "@/components/AppDialog";
+import TodoColorPicker from "@/components/TodoColorPicker";
 import { mapActions } from "vuex";
 
 export default {
-  components: { AppDialog },
+  components: { AppDialog, TodoColorPicker },
 
   props: {
     todoItem: {
@@ -37,10 +54,14 @@ export default {
   },
 
   methods: {
-    ...mapActions(["EditTodoItem"]),
+    ...mapActions({ EditTodoItem: "todos/EditItem" }),
 
     onTitleEdit(newtitle) {
       this.newTodoItem.title = newtitle;
+    },
+
+    onColorPick(newColor) {
+      this.newTodoItem.color = newColor;
     },
 
     close() {

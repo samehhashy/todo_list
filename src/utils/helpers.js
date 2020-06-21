@@ -1,8 +1,8 @@
 export function generateId(arr) {
-  let id = 0;
+  let id = "";
   id = Math.random()
     .toString(36)
-    .substr(2, 6);
+    .substr(2, 9);
   if (arr.some(el => el.id === id)) generateId();
   else return id;
 }

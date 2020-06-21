@@ -6,7 +6,6 @@
     transition="scale-transition"
     offset-y
     nudge-bottom="20"
-    eager
   >
     <template #activator="{ on, attrs }">
       <div v-bind="attrs" v-on="on">
@@ -35,10 +34,16 @@
 
 <script>
 export default {
+  props: {
+    color: {
+      type: String,
+      required: true
+    }
+  },
+
   data() {
     return {
-      menu: false,
-      color: this.$vuetify.theme.themes.light.secondary // default
+      menu: false
     };
   },
 

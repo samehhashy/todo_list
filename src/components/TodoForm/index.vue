@@ -10,20 +10,10 @@
       validate-on-blur
     >
       <template #append>
-        <AppColorPicker @color-pick="handleColorPick">
-          <template>
-            <v-btn
-              fab
-              depressed
-              x-small
-              dark
-              :color="form.color"
-              class="mx-2 mt-1"
-            >
-              <v-icon size="20">mdi-palette</v-icon>
-            </v-btn>
-          </template>
-        </AppColorPicker>
+        <TodoColorPicker
+          @color-pick="handleColorPick"
+          :current-color="form.color || undefined"
+        />
 
         <v-btn
           fab
@@ -41,17 +31,17 @@
 </template>
 
 <script>
-import AppColorPicker from "@/components/AppColorPicker";
+import TodoColorPicker from "@/components/TodoColorPicker";
 import { mapActions } from "vuex";
 
 export default {
-  components: { AppColorPicker },
+  components: { TodoColorPicker },
 
   data() {
     return {
       form: {
         title: "",
-        color: this.$vuetify.theme.themes.light.secondary // default
+        color: "#" + this.$vuetify.theme.themes.light.secondary
       },
       validations: [
         v => !!v || "Cannot be empty",
@@ -68,7 +58,7 @@ export default {
   },
 
   methods: {
-    ...mapActions(["AddTodoItem"]),
+    ...mapActions({ AddTodoItem: "todos/AddItem" }),
 
     onSubmit() {
       if (this.isValid) {
