@@ -51,6 +51,9 @@ export default new Vuex.Store({
     },
     TOGGLE_DONE_STATE(state, payload) {
       state.todoItems[payload].isDone = !state.todoItems[payload].isDone;
+    },
+    EDIT_TODO_ITEM(state, payload) {
+      state.todoItems[payload.index] = payload.item;
     }
   },
 
@@ -69,6 +72,14 @@ export default new Vuex.Store({
     ToggleDoneState({ state, commit }, item) {
       const index = getIndexById(item, state.todoItems);
       commit("TOGGLE_DONE_STATE", index);
+    },
+
+    EditTodoItem({ state, commit }, item) {
+      return new Promise(resolve => {
+        const index = getIndexById(item, state.todoItems);
+        commit("EDIT_TODO_ITEM", { item, index });
+        resolve();
+      });
     }
   },
 

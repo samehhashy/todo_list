@@ -1,10 +1,10 @@
 <template>
-  <v-container>
-    <div class="todo">
+  <div class="todo">
+    <v-container>
       <TodoForm class="mb-6" />
       <TodoList :todo-items="todoItems" />
-    </div>
-  </v-container>
+    </v-container>
+  </div>
 </template>
 
 <script>

@@ -77,10 +77,12 @@ export default {
       this.RemoveTodoItem(this.todoItem);
     },
 
-    editItem() {},
-
     toggleDoneState() {
       this.ToggleDoneState(this.todoItem);
+    },
+
+    editItem() {
+      this.$emit("click:edit");
     }
   }
 };
