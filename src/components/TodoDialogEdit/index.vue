@@ -68,17 +68,32 @@ export default {
     }
   },
 
+  watch: {
+    todoItem: {
+      immediate: true,
+      deep: true,
+      handler(item) {
+        Object.assign(this.newTodoItem, item);
+      }
+    }
+  },
+
   methods: {
     onColorPick(newColor) {
       this.newTodoItem.color = newColor;
     },
 
     close() {
+      this.newTodoItem = { title: "", color: "" };
       this.$emit("close");
     },
 
     onTitleEdit(newTitle) {
       this.newTodoItem.title = newTitle;
+    },
+
+    assignItem() {
+      this.newTodoItem = { ...this.todoItem };
     },
 
     onSubmit() {
