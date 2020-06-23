@@ -13,6 +13,7 @@ Simple TODO App to demostrate the CRUD functionalities in VueJS.
 * VueJS as a front-end framework.
 * Vuetify as a UI library.
 * Vuex as a state management library.
+* Vuex ORM for object relational mapping.
 * Vuex-Persist for persisting the data in the client's localStorage.
 ```
 
