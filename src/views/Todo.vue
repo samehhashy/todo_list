@@ -10,13 +10,28 @@
 <script>
 import TodoForm from "@/components/TodoForm";
 import TodoList from "@/components/TodoList";
-import { mapGetters } from "vuex";
+import placeholderData from "@/data.json";
+import User from "@/models/User";
 
 export default {
   components: { TodoForm, TodoList },
 
+  data() {
+    return {
+      placeholderData
+    };
+  },
+
   computed: {
-    ...mapGetters({ todoItems: "todos/items" })
+    user() {
+      return User.query()
+        .with("todos")
+        .get();
+    }
+  },
+
+  created() {
+    User.insert({ data: this.placeholderData });
   }
 };
 </script>

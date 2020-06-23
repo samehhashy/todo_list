@@ -1,22 +1,38 @@
 <template>
-  <v-dialog @click:outside="close" :max-width="maxWidth" :value="isActive">
-    <v-card>
-      <BtnClose @close="close" />
-      <slot />
+  <v-dialog
+    @keydown.esc="close"
+    @click:outside="close"
+    :max-width="maxWidth"
+    :value="isActive"
+  >
+    <v-card class="dialog">
+      <v-card-title class="dialog__title">
+        <h3>
+          {{ title }}
+        </h3>
+        <v-spacer />
+        <v-btn depressed fab small color="secondary" @click="$emit('close')">
+          <v-icon>mdi-close</v-icon>
+        </v-btn>
+      </v-card-title>
+
+      <v-card-text>
+        <slot />
+      </v-card-text>
     </v-card>
   </v-dialog>
 </template>
 
 <script>
-import BtnClose from "@/components/AppBtnClose";
-
 export default {
-  components: { BtnClose },
-
   props: {
     isActive: {
       type: Boolean,
       default: false
+    },
+    title: {
+      type: String,
+      default: ""
     },
     size: {
       type: String,

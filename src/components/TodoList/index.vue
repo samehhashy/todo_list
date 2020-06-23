@@ -56,7 +56,7 @@ export default {
     },
 
     sortedItems() {
-      return _sortBy(this.todoItems, "isDone");
+      return _sortBy(this.todoItems, "is_done");
     }
   }
 };

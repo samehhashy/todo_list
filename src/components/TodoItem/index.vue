@@ -13,7 +13,7 @@
                 <h1
                   class="todo-item__title"
                   v-text="todoItem.title"
-                  :class="{ 'todo-item--is-done': todoItem.isDone }"
+                  :class="{ 'todo-item--is-done': todoItem.is_done }"
                 />
               </v-col>
 
@@ -21,7 +21,7 @@
                 <div class="todo-item__actions">
                   <v-btn
                     class="todo-item__actions__btn"
-                    :color="todoItem.isDone ? 'accent' : 'disabled'"
+                    :color="todoItem.is_done ? 'accent' : 'disabled'"
                     fab
                     x-small
                     depressed

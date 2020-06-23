@@ -5,32 +5,32 @@ const state = {
     // {
     //   id: "hzx49pn4x",
     //   title: "Aut sit praesentium rem quo architecto.",
-    //   isDone: false,
+    //   is_done: false,
     //   color: "#5ca8e0"
     // },
     // {
     //   id: "4fkyuibtd",
     //   title:
     //     "Perferendis quis repellat temporibus quaerat mollitia nostrum minus aut.",
-    //   isDone: true,
+    //   is_done: true,
     //   color: "#5ca8e0"
     // },
     // {
     //   id: "k61hr2hbc",
     //   title: "Aut enim dolorem provident deleniti ab sunt est odit blanditiis.",
-    //   isDone: false,
+    //   is_done: false,
     //   color: "#5ca8e0"
     // },
     // {
     //   id: "h00d6bbxj",
     //   title: "Est animi dolor soluta velit illum quos.",
-    //   isDone: true,
+    //   is_done: true,
     //   color: "#5ca8e0"
     // },
     // {
     //   id: "l5j38gaq6",
     //   title: "Repellendus amet et maxime ullam.",
-    //   isDone: false,
+    //   is_done: false,
     //   color: "#5ca8e0"
     // }
   ]
@@ -44,7 +44,7 @@ const mutations = {
     state.items.splice(payload, 1);
   },
   TOGGLE_DONE_STATE(state, payload) {
-    state.items[payload].isDone = !state.items[payload].isDone;
+    state.items[payload].is_done = !state.items[payload].is_done;
   },
   EDIT_ITEM(state, payload) {
     state.items[payload.index] = payload.item;
@@ -53,7 +53,7 @@ const mutations = {
 
 const actions = {
   AddItem({ state, commit }, item) {
-    item.isDone = false;
+    item.is_done = false;
     item.id = generateId(state.items);
     commit("ADD_ITEM", item);
   },

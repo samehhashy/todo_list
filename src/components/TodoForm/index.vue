@@ -1,41 +1,49 @@
 <template>
   <v-form @submit.prevent="onSubmit">
-    <v-text-field
-      v-model="form.title"
-      label="Add a new item"
-      outlined
-      rounded
-      color="secondary"
-      :rules="validations"
-      validate-on-blur
-    >
-      <template #append>
-        <TodoColorPicker
-          @color-pick="handleColorPick"
-          :current-color="form.color || undefined"
-        />
+    <v-row align="baseline">
+      <v-col cols="2" sm="1" class="d-flex justify-end">
+        <UserSelect />
+      </v-col>
 
-        <v-btn
-          fab
-          depressed
-          small
-          color="accent"
-          @click="onSubmit"
-          :disabled="!isValid"
+      <v-col>
+        <v-text-field
+          v-model="form.title"
+          label="Add a new item"
+          outlined
+          rounded
+          color="secondary"
+          :rules="validations"
+          validate-on-blur
         >
-          <v-icon size="28">mdi-plus</v-icon>
-        </v-btn>
-      </template>
-    </v-text-field>
+          <template #append>
+            <TodoColorPicker
+              @color-pick="handleColorPick"
+              :current-color="form.color || undefined"
+            />
+            <v-btn
+              fab
+              depressed
+              small
+              color="accent"
+              @click="onSubmit"
+              :disabled="!isValid"
+            >
+              <v-icon size="28">mdi-plus</v-icon>
+            </v-btn>
+          </template>
+        </v-text-field>
+      </v-col>
+    </v-row>
   </v-form>
 </template>
 
 <script>
 import TodoColorPicker from "@/components/TodoColorPicker";
 import { mapActions } from "vuex";
+import UserSelect from "@/components/UserSelect";
 
 export default {
-  components: { TodoColorPicker },
+  components: { TodoColorPicker, UserSelect },
 
   data() {
     return {
