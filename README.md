@@ -6,6 +6,7 @@ VueJS Todo App
 # Project Description
 ```
 Simple TODO App to demostrate the CRUD functionalities in VueJS.
+The App emphasizes the use of Object Relational Mapping to achieve CRUD actions and preserve reactivity.
 ```
 
 # Main Technologies Used
