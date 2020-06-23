@@ -1,5 +1,5 @@
 <template>
-  <app-dialog @close="$emit('close')" :is-active="true" size="md">
+  <AppDialog @close="close" :is-active="isActive" size="md">
     <template>
       <v-container>
         <v-form @submit.prevent="onSubmit">
@@ -14,7 +14,7 @@
             </v-col>
             <v-col cols="2" class="pt-5">
               <TodoColorPicker
-                :current-color="newTodoItem.color"
+                :current-color="newTodoItem.color || todoItem.color"
                 @color-pick="onColorPick"
               />
             </v-col>
@@ -29,37 +29,46 @@
         </v-form>
       </v-container>
     </template>
-  </app-dialog>
+  </AppDialog>
 </template>
 
 <script>
 import AppDialog from "@/components/AppDialog";
 import TodoColorPicker from "@/components/TodoColorPicker";
-import { mapActions } from "vuex";
+import Todo from "@/models/Todo";
 
 export default {
   components: { AppDialog, TodoColorPicker },
 
   props: {
-    todoItem: {
-      type: Object,
+    isActive: {
+      type: Boolean,
+      default: false
+    },
+    itemId: {
+      type: String,
       required: true
     }
   },
 
   data() {
     return {
-      newTodoItem: {}
+      newTodoItem: {
+        title: "",
+        color: ""
+      }
     };
   },
 
+  computed: {
+    todoItem() {
+      if (this.itemId) {
+        return Todo.find(this.itemId);
+      } else return "";
+    }
+  },
+
   methods: {
-    ...mapActions({ EditTodoItem: "todos/EditItem" }),
-
-    onTitleEdit(newtitle) {
-      this.newTodoItem.title = newtitle;
-    },
-
     onColorPick(newColor) {
       this.newTodoItem.color = newColor;
     },
@@ -68,17 +77,14 @@ export default {
       this.$emit("close");
     },
 
-    onSubmit() {
-      this.EditTodoItem(this.newTodoItem).then(() => this.close());
+    onTitleEdit(newTitle) {
+      this.newTodoItem.title = newTitle;
     },
 
-    assignItem() {
-      this.newTodoItem = { ...this.todoItem };
+    onSubmit() {
+      Todo.update({ where: this.itemId, data: this.newTodoItem });
+      this.close();
     }
-  },
-
-  created() {
-    this.assignItem();
   }
 };
 </script>

@@ -1,49 +1,41 @@
 <template>
   <v-form @submit.prevent="onSubmit">
-    <v-row align="baseline">
-      <v-col cols="2" sm="1" class="d-flex justify-end">
-        <UserSelect />
-      </v-col>
-
-      <v-col>
-        <v-text-field
-          v-model="form.title"
-          label="Add a new item"
-          outlined
-          rounded
-          color="secondary"
-          :rules="validations"
-          validate-on-blur
+    <v-text-field
+      v-model="form.title"
+      label="Add a new item"
+      outlined
+      rounded
+      color="secondary"
+      :rules="validations"
+      validate-on-blur
+    >
+      <template #append>
+        <TodoColorPicker
+          @color-pick="form.color = $event"
+          :current-color="form.color || undefined"
+        />
+        <v-btn
+          fab
+          depressed
+          small
+          color="accent"
+          @click="onSubmit"
+          :disabled="!isValid"
         >
-          <template #append>
-            <TodoColorPicker
-              @color-pick="handleColorPick"
-              :current-color="form.color || undefined"
-            />
-            <v-btn
-              fab
-              depressed
-              small
-              color="accent"
-              @click="onSubmit"
-              :disabled="!isValid"
-            >
-              <v-icon size="28">mdi-plus</v-icon>
-            </v-btn>
-          </template>
-        </v-text-field>
-      </v-col>
-    </v-row>
+          <v-icon size="28">mdi-plus</v-icon>
+        </v-btn>
+      </template>
+    </v-text-field>
   </v-form>
 </template>
 
 <script>
 import TodoColorPicker from "@/components/TodoColorPicker";
-import { mapActions } from "vuex";
-import UserSelect from "@/components/UserSelect";
+import { mapGetters } from "vuex";
+import Todo from "@/models/Todo";
 
 export default {
-  components: { TodoColorPicker, UserSelect },
+  components: { TodoColorPicker },
 
   data() {
     return {
@@ -59,6 +51,8 @@ export default {
   },
 
   computed: {
+    ...mapGetters(["selectedUserId"]),
+
     isValid() {
       const value = this.form.title.length;
       return value && value <= 100;
@@ -66,21 +60,17 @@ export default {
   },
 
   methods: {
-    ...mapActions({ AddTodoItem: "todos/AddItem" }),
-
     onSubmit() {
       if (this.isValid) {
-        this.AddTodoItem({ ...this.form });
+        const userId = this.selectedUserId;
+        this.form.user_id = userId;
+        Todo.insert({ data: this.form });
         this.resetForm();
       }
     },
 
     resetForm() {
       this.form.title = "";
-    },
-
-    handleColorPick(color) {
-      this.form.color = color;
     }
   }
 };

@@ -1,8 +1,11 @@
 <template>
   <div class="todo">
     <v-container>
-      <TodoForm class="mb-6" />
-      <TodoList :todo-items="todoItems" />
+      <div class="d-flex mb-5">
+        <UserSelect />
+        <TodoForm class="flex-grow-1 pl-4" />
+      </div>
+      <TodoList />
     </v-container>
   </div>
 </template>
@@ -10,28 +13,34 @@
 <script>
 import TodoForm from "@/components/TodoForm";
 import TodoList from "@/components/TodoList";
-import placeholderData from "@/data.json";
+import UserSelect from "@/components/UserSelect";
+import placeholderData from "@/data";
 import User from "@/models/User";
 
 export default {
-  components: { TodoForm, TodoList },
+  components: { TodoForm, TodoList, UserSelect },
 
   data() {
-    return {
-      placeholderData
-    };
+    return { placeholderData };
   },
 
   computed: {
-    user() {
-      return User.query()
-        .with("todos")
-        .get();
+    users() {
+      return User.all();
+    }
+  },
+
+  methods: {
+    initDB() {
+      if (!this.users.length) {
+        // making sure the app has some initial data, for demonstration purposes
+        User.insert({ data: this.placeholderData });
+      }
     }
   },
 
   created() {
-    User.insert({ data: this.placeholderData });
+    this.initDB();
   }
 };
 </script>

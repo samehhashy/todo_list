@@ -1,62 +1,68 @@
 <template>
   <div>
-    <v-slide-y-transition group>
+    <v-slide-y-transition group v-if="todos.length">
       <TodoItem
-        v-for="(item, i) in sortedItems()"
-        :key="i"
+        v-for="item in todos"
+        :key="item.id"
         :todo-item="item"
-        @click:edit="initEdit(item)"
+        @click:edit="editingItemId = item.id"
+        @click:delete="onItemDelete(item.id)"
+        @click:toggle="onItemToggle(item.id, item.is_done)"
       />
     </v-slide-y-transition>
 
+    <div v-else>
+      <h3 class="text--disabled text-center">
+        This user doesn't have any items yet
+      </h3>
+    </div>
+
     <TodoDialogEdit
-      :todo-item="editingItem"
-      @close="resetEdit"
-      v-if="isEditing"
+      :item-id="editingItemId"
+      @close="editingItemId = ''"
+      :is-active="Boolean(editingItemId)"
     />
   </div>
 </template>
 
 <script>
 import TodoItem from "@/components/TodoItem";
-import _sortBy from "lodash/sortBy";
+import Todo from "@/models/Todo";
+import { mapGetters } from "vuex";
+import TodoDialogEdit from "@/components/TodoDialogEdit";
 
 export default {
   components: {
     TodoItem,
-    TodoDialogEdit: () => import("@/components/TodoDialogEdit")
-  },
-
-  props: {
-    todoItems: {
-      type: Array,
-      required: true
-    }
+    TodoDialogEdit
   },
 
   data() {
     return {
-      editingItem: {}
+      deletingItemId: "",
+      editingItemId: ""
     };
   },
 
   computed: {
-    isEditing() {
-      return Boolean(Object.entries(this.editingItem).length);
+    ...mapGetters(["selectedUserId"]),
+
+    todos() {
+      return Todo.query()
+        .where("user_id", this.selectedUserId)
+        .orderBy("is_done")
+        .orderBy(todo => Number(todo.id.substr(4, todo.id.length - 3)), "desc")
+        .get();
     }
   },
 
   methods: {
-    initEdit(item) {
-      this.editingItem = item;
+    onItemToggle(id, isDone) {
+      Todo.update({ where: id, data: { is_done: !isDone } });
     },
 
-    resetEdit() {
-      this.editingItem = {};
-    },
-
-    sortedItems() {
-      return _sortBy(this.todoItems, "is_done");
+    onItemDelete(id) {
+      Todo.delete(id);
     }
   }
 };

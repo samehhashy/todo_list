@@ -39,6 +39,7 @@
 <script>
 import AppDialog from "@/components/AppDialog";
 import User from "@/models/User";
+import { mapActions } from "vuex";
 
 export default {
   components: { AppDialog },
@@ -54,7 +55,8 @@ export default {
     return {
       form: {
         first_name: "",
-        last_name: ""
+        last_name: "",
+        todos: []
       },
       validations: [v => !!v || "This field is required"]
     };
@@ -67,9 +69,12 @@ export default {
   },
 
   methods: {
+    ...mapActions(["SetSelectedUserId"]),
+
     onUserCreate() {
       if (this.isValid) {
         User.insert({ data: this.form });
+        this.SetSelectedUserId(User.query().last().id);
         this.close();
       }
     },

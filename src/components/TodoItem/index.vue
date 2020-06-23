@@ -25,7 +25,7 @@
                     fab
                     x-small
                     depressed
-                    @click="toggleDoneState"
+                    @click="$emit('click:toggle')"
                   >
                     <v-icon>mdi-check</v-icon>
                   </v-btn>
@@ -35,7 +35,7 @@
                     fab
                     x-small
                     depressed
-                    @click="editItem"
+                    @click="$emit('click:edit')"
                   >
                     <v-icon>mdi-pencil</v-icon>
                   </v-btn>
@@ -45,7 +45,7 @@
                     fab
                     x-small
                     depressed
-                    @click="removeItem"
+                    @click="$emit('click:delete')"
                   >
                     <v-icon>mdi-close</v-icon>
                   </v-btn>
@@ -60,32 +60,11 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
-
 export default {
   props: {
     todoItem: {
       type: Object,
       required: true
-    }
-  },
-
-  methods: {
-    ...mapActions({
-      RemoveTodoItem: "todos/RemoveItem",
-      ToggleDoneState: "todos/ToggleDoneState"
-    }),
-
-    removeItem() {
-      this.RemoveTodoItem(this.todoItem);
-    },
-
-    toggleDoneState() {
-      this.ToggleDoneState(this.todoItem);
-    },
-
-    editItem() {
-      this.$emit("click:edit");
     }
   }
 };

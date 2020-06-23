@@ -15,6 +15,8 @@
 <script>
 import AppDialog from "@/components/AppDialog";
 import User from "@/models/User";
+import Todo from "@/models/Todo";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   components: { AppDialog },
@@ -31,6 +33,8 @@ export default {
   },
 
   computed: {
+    ...mapGetters(["selectedUserId"]),
+
     username() {
       if (this.userId) {
         const user = User.find(this.userId);
@@ -40,8 +44,14 @@ export default {
   },
 
   methods: {
+    ...mapActions(["SetSelectedUserId"]),
+
     onUserDelete() {
       User.delete(this.userId);
+      Todo.delete(todo => todo.user_id === this.userId);
+      const firstUser = User.query().first();
+      if (this.selectedUserId === this.userId && firstUser)
+        this.SetSelectedUserId(firstUser.id);
       this.close();
     },
 
