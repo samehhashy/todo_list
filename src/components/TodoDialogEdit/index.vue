@@ -8,7 +8,7 @@
               <v-text-field
                 :value="todoItem.title"
                 outlined
-                label="Edit Item"
+                label="Item Title *"
                 @input="onTitleEdit"
               />
             </v-col>

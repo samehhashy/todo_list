@@ -11,6 +11,7 @@
       rounded
       color="secondary"
       :rules="validation.title"
+      autofocus
     >
       <template #append>
         <TodoColorPicker
@@ -36,6 +37,7 @@
 import TodoColorPicker from "@/components/TodoColorPicker";
 import { mapGetters } from "vuex";
 import Todo from "@/models/Todo";
+import { generateId } from "@/utils/helpers";
 
 export default {
   components: { TodoColorPicker },
@@ -77,6 +79,7 @@ export default {
       if (this.validation.isValid) {
         const userId = this.selectedUserId;
         this.form.user_id = userId;
+        this.form.id = generateId(Todo.all());
         Todo.insert({ data: this.form });
         this.resetForm();
       }

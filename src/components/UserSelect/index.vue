@@ -90,11 +90,17 @@ export default {
 
     onDeleteUser(id) {
       this.deletingUserId = id;
+    },
+
+    initSelectedUser() {
+      if (!this.selectedUserId && this.users.length) {
+        this.SetSelectedUserId(this.users[0].id);
+      }
     }
   },
 
   created() {
-    this.users.length && this.SetSelectedUserId(this.users[0].id);
+    this.initSelectedUser();
   }
 };
 </script>

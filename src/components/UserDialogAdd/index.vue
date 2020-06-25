@@ -1,6 +1,6 @@
 <template>
   <AppDialog :is-active="isActive" size="md" @close="close" title="Add User">
-    <v-form @submit.prevent="onUserCreate">
+    <v-form v-model="isValid" @submit.prevent="onUserCreate" ref="formUserAdd">
       <v-row>
         <v-col cols="6">
           <v-text-field
@@ -8,7 +8,7 @@
             outlined
             label="First Name *"
             :rules="validations"
-            validate-on-blur
+            autofocus
           />
         </v-col>
         <v-col cols="6">
@@ -17,7 +17,6 @@
             outlined
             label="Last Name *"
             :rules="validations"
-            validate-on-blur
           />
         </v-col>
         <v-col cols="12" class="d-flex">
@@ -40,6 +39,7 @@
 import AppDialog from "@/components/AppDialog";
 import User from "@/models/User";
 import { mapActions } from "vuex";
+import { generateId } from "@/utils/helpers";
 
 export default {
   components: { AppDialog },
@@ -58,14 +58,9 @@ export default {
         last_name: "",
         todos: []
       },
-      validations: [v => !!v || "This field is required"]
+      validations: [v => !!v || "This field is required"],
+      isValid: true
     };
-  },
-
-  computed: {
-    isValid() {
-      return this.form.first_name && this.form.last_name;
-    }
   },
 
   methods: {
@@ -73,6 +68,7 @@ export default {
 
     onUserCreate() {
       if (this.isValid) {
+        this.form.id = generateId(User.all());
         User.insert({ data: this.form });
         this.SetSelectedUserId(User.query().last().id);
         this.close();
@@ -80,7 +76,8 @@ export default {
     },
 
     close() {
-      this.form = { first_name: "", last_name: "" };
+      // this.form = { first_name: "", last_name: "" };
+      this.$refs.formUserAdd.reset();
       this.$emit("close");
     }
   }
