@@ -1,13 +1,16 @@
 <template>
-  <v-form @submit.prevent="onSubmit">
+  <v-form
+    @submit.prevent="submitHandler"
+    v-model="validation.isValid"
+    ref="todoForm"
+  >
     <v-text-field
       v-model="form.title"
       label="Add a new item"
       outlined
       rounded
       color="secondary"
-      :rules="validations"
-      validate-on-blur
+      :rules="validation.title"
     >
       <template #append>
         <TodoColorPicker
@@ -19,8 +22,8 @@
           depressed
           small
           color="accent"
-          @click="onSubmit"
-          :disabled="!isValid"
+          type="submit"
+          :disabled="!validation.isValid"
         >
           <v-icon size="28">mdi-plus</v-icon>
         </v-btn>
@@ -43,25 +46,35 @@ export default {
         title: "",
         color: "#" + this.$vuetify.theme.themes.light.secondary
       },
-      validations: [
-        v => !!v || "Cannot be empty",
-        v => v.length <= 100 || "Cannot be more than 100 characters"
-      ]
+
+      validation: {
+        rules: [
+          v => Boolean(v) || "Cannot be empty",
+          v => v.length <= 100 || "Cannot be more than 100 characters"
+        ],
+        title: [],
+        isValid: true
+      }
     };
   },
 
   computed: {
-    ...mapGetters(["selectedUserId"]),
-
-    isValid() {
-      const value = this.form.title.length;
-      return value && value <= 100;
-    }
+    ...mapGetters(["selectedUserId"])
   },
 
   methods: {
-    onSubmit() {
-      if (this.isValid) {
+    submitHandler() {
+      this.validateForm();
+      setTimeout(() => this.addItem());
+    },
+
+    validateForm() {
+      this.validation.title = this.validation.rules;
+      this.$refs.todoForm.validate();
+    },
+
+    addItem() {
+      if (this.validation.isValid) {
         const userId = this.selectedUserId;
         this.form.user_id = userId;
         Todo.insert({ data: this.form });
@@ -70,7 +83,11 @@ export default {
     },
 
     resetForm() {
+      // will not reset the color because
+      // the user is likely to use the same last color
       this.form.title = "";
+      this.$refs.todoForm.resetValidation();
+      this.validation.title = [];
     }
   }
 };

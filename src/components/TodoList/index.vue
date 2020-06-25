@@ -51,7 +51,7 @@ export default {
       return Todo.query()
         .where("user_id", this.selectedUserId)
         .orderBy("is_done")
-        .orderBy(todo => Number(todo.id.substr(4, todo.id.length - 3)), "desc")
+        .orderBy(todo => Number(todo.id.substr(3, todo.id.length - 4)), "desc")
         .get();
     }
   },
