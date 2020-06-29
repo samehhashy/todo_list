@@ -34,6 +34,8 @@
 
 <script>
 export default {
+  name: "AppColorPicker",
+
   props: {
     color: {
       type: String,
